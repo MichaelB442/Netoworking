@@ -84,6 +84,255 @@ Frames
     Data Payload
     Footer FCS/CRC
 
+How Switches affect the netowrk
+  Builds a CAM
+    A mac address table
+  Forwards frames via MAC address
+  Switch Modes
+    Cut-Through -- forwards without waiting for whole packet
+    Fragment-Free -- reads atleast 64 Bytes before forwarding
+    Store and Forward -- reads whole packet then sends
+  **ATTACK
+      CAM Table Overflow Attack
+        Send frames with bogus MAC addresses, Fills the CAM so the switch cannot relearn real MAC addresses
+
+MAC ADDRESSES
+  Length: 48-bit | 6 byte | 12 Hex
+  Format:
+      Windows: 01-23-45-12-34-56
+      Unix/Linux: 01:23:45:12:34:56
+      Cisco: 1234.5612.3456
+      First 24-bits assigned by IANA (3 Octets)
+      Vendor Assigns last 24(3 Octets)
+  Unicast - 8th bit is off
+  Multicast - 8th bit is on
+  broadcast - all bits on
+  Mac Spoofing
+    mac names - Hardware, Firmware, Burned-in
+    used to bu unchangable can now be changed w/ Software
+
+Data-Link Frame Headers
+  https://net.cybbh.io/public/networking/latest/01_data/fg.html#_1_3_6_describe_the_contents_of_an_ethernet_header_and_frame
+VLAN
+  Trunks connect VLANS
+  Default vlan per port on a switch is VLAN1
+  Data-User Traffic
+  Voice- VOIP traffic
+  Management - Switch and router management
+  Native - Untagged switch and router traffic
+  Adds a portion to the frame to define the vlan called a vlan tag 
+      (https://net.cybbh.io/public/networking/latest/01_data/fg.html#_1_3_7_describe_an_802_1q_virtual_local_area_network_vlan_frame_and_how_its_frames_differ_from_a_standard_802_3_frame)
+  you can also have two vlan tags
+  **ATTACK
+      VLAN HOPPING ATTACK
+      Switch spoofing(DTP)
+      Single Tagging
+      Double Tagging (Using native VLAN)
+ARP
+  ARP (OP1/OP2)
+  RARP(OP3/OP4)reverse
+  Proxy ARP(OP2)can poison ARP CACHE
+  Gratuitous ARP(OP2) can poison ARP CACHE
+
+ARP CACHE
+  All resolved MAC to IP resolutions
+  If MAC is not in cache then ARP is used
+  Dynamic entries last from 2-20 minutes
+  Default gateway is present at minimum
+  Can be easily duped by attackers
+
+VTP - VLAN TRUNKING PROTOCOL
+  Dynamically add/remove/modify VLANs
+  Cisco proprietary
+  Server
+  Client
+  Transparent
+  Can cause switches to dump all VLAN information
+  Cause a DoS as switch will not support configured VLANS
+
+DTP - DYNAMIC TRUNKING PROTOCOL
+  Dynamically create trunk links
+  Cisco Proprietary
+  Dynamic-Auto/Dynamic-Desirable
+  On by default
+  Can send messages to form a trunk
+  Recommend - disable DTP Negotiations, manually assign Access or Trunk
+
+CDP,FDP,AND LLDP
+  Cisco Discovery Protocol (CDP)
+  Foundry Discovery Protocol (FDP)
+  Link Layer Discovery Protocol (LLDP)
+  Leaks valuable information
+  Clear Text
+  Enabled by default
+  Disable it:
+      Globally
+      Per interface
+  May require it for VOIP
+
+STP - SPANNING TREE PROTOCOL
+  1. Elect root bridge
+  2. identify root ports
+  3. identify designated ports for segments
+  4. set alternate ports to block
+
+**ATTACK
+Spanning-Tree Attack
+  Crafted Bridge Protocol Data units (BPDU)
+  Used to perform a DoS or MitM
+
+PORT SECURITY MODES
+  Shutdown(default)-has to be reenabled by an admin
+  Protect - less privileges
+  Restrict - less privileges/logs
+  Uses:
+    Restrict unauthorized access
+    Limit MAC address learned on port
+    Prevent CAM Table Overflow attacks
+  Weaknesses:
+    Dependent on MACs
+    MAC spoofing
+
+LAYER 2 attack mitigation
+  Shutdown unused ports
+  Enable Port Security 
+  IP Source Guard
+  Manually assign STP Root
+  BPDU Guard
+  DHCP snoopring
+    Techniques:
+      802.1x
+      Dynamic ARP inspection (DAI)
+      Static CAM entries
+      Static ARP entries
+      Disable DTP negotiations
+      Manually assign Access/Trunk ports
+      Network Access Complete
+________________________________________________________END OF SLIDE SHOW
+SLIDE SHOW 2_____________________________________________________________
+
+NETWORK LAYER
+  Addressing Schemes
+  Routing
+  Encapsulation
+  IP Fragmentation/Reassembly
+  Error Handling/Diagnostics
+    INTERNET PROTOCOL VERSIONS:
+      *IPV4(ARPANET 1982)
+        Classful subnetting
+          -Class A (0 to 127)UNICAST
+          -Class B (128 to 191)UNICAST
+          -Class C (192 to 223)UNICAST
+          -Class D (224 to 239) - Multicasting
+          -Class E (240 to 255) - Not used
+          -Broadcast IP IP with full host portion on
+           https://git.cybbh.space/net/public/raw/master/modules/networking/slides-v4/images/IPv4_Header.png
+        Classless subnetting(CIDR)
+          Subnetting
+            Network Portion/Host Portion
+            Using Host bits as Subnet Bits
+        NAT- Convert IP addresses
+        Fragmentation
+          Breaking up packets from higher MTU to lower MTU network
+          Performed by routers
+          MF flag is on from 1st until 2nd to last
+          Offset is on from 2nd until the last
+          Offset = (MTU - (IHL x 4)) ÷ 8
+      *IPv6(Standardized 2017)
+        Fragmentation
+          IPv6 does not support fragmentation within it’s header
+          Routers do not fragment IPv6 packets
+          Source adjusts MTU to avoid fragmentation
+          Source can use IPv6 fragmentation extension header
+
+      Fragmentation Vulnerability
+        Can use fragmentation overlaps to avoid firewall detection
+        Attack depends on how OS deals with overlap
+        Example: Teardrop attack
+    IPV4 Auto Configuration
+      APIPA
+        169.254.0.0/16
+      DHCP
+        DORA Process
+    TraceRoute ICMP,UDP,TCP
+
+BGP
+  Road-map of the Internet
+  Routes traffic between Autonomous System (AS) Number
+  Advertises IP CIDR address blocks
+  Establishes Peer relationships
+  Complicated configuration
+  Complicated and slow path selection
+  How BGP chooses the best path:
+    Advertise a more specific route. 192.168.1.0 /24 is more specific than 192.168.0.0 /16.
+    Offer a shorter route to certain blocks of IP addresses.
+    A route to ip prefix with 4 AS 'hops" is better than route with 5 AS 'hops'
+  Hijacking:
+    Illegitimate advertising of addresses
+    BGP propagates false information
+    Purpose:
+      stealing prefixes
+      monitoring traffic
+      intercept (and possibly modify) Internet traffic
+      'black holing' traffic
+      perform MitM
+  Hijaking Defense
+    IP prefix filtering
+    BGP hijacking detection
+      Tracking the change in TTL of incoming packets
+      Increased Round Trip Time (RTT) which increases latency
+      Monitoring misdirected traffic (change in AS path from tools like Looking Glass)
+    BGPSec
+_______________________________________________________________END SLIDE SHOW
+SLIDE SHOW 3_________________________________________________________________
+Layer 4
+TRANSPORT LAYER PROTOCOLS
+  Connection-Oriented
+    TCP
+    Unicast Traffic
+  Connection-less
+    UDP
+    Broadcast, Multicast, or Unicast
+  Well Known Ports(System):: 0-1023
+  Registered(User):: 1024-49151
+  Dynamic(Private):: 49152-65535
+Layer 5
+VPN - Virtual Private Network
+  Remote Access (Client to Site)
+  Site to Site
+Layer 6
+  Translation
+  Formating
+  Encoding (ASCII, EBCDIC, HEX, BASE64)
+  Encryption (Symmetric or Asymmetric)
+  Compression
+Layer 7
+Telnet TCP 23
+SSH TCP 22
+  Client / Server / Session
+  Keys
+    User Key - Asymmetric public key used to identify the user to the server
+    Host Key - Asymmetric public key used to identify the server to the user
+    Session Key - Symmetric key created by the client and server to protect the session’s 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
