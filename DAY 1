@@ -5,3 +5,94 @@ Link to all information made by course monitor
   https://miro.com/app/board/o9J_klSqCSY=/?share_link_id=16133753693 
 cybbh
   https://net.cybbh.io/public/networking/latest/index.html
+
+
+Begin Notes: Networking Access
+  https://net.cybbh.io/-/public/-/jobs/875409/artifacts/modules/networking/slides-v4/01_data.html
+
+Protocol Data Unit
+    Session-Application = Data
+    Transport = Segment/Datagram
+    Network = Packet
+    Data Link = Frame
+    Physical = Bit
+
+Internet Standards
+    IETF(Internet Engineering Task Force) = Manages RFC's
+    IANA(Internet Assigned Numbers Authority) = Internet Numbers (Manages IPs)
+    IEE(Institute of Electrical and Electronics Engineers) = LAN/WAN electrical standards - standards for wireless
+
+Binary
+    Base2 0 or 1
+    bit, nibble(4 bits), byte(8 bits), half-word(16 bits), word(32 bits)
+
+Hexadecimal
+    Base16(0-9,A-F)
+    0x####
+
+Base64
+    64 symbols (A-Z,a-z,0-9,+,/)
+
+*Lan Topologies: (How they are connected)*
+  -Bus
+    Straight connection
+    https://www.nakivo.com/blog/wp-content/uploads/2021/04/A-bus-network-topology.webp
+  -Star 
+    Work stations connected to a central point
+    https://www.nakivo.com/blog/wp-content/uploads/2021/04/The-star-network-topology.webp
+  -Ring
+    Its a circle
+    https://www.nakivo.com/blog/wp-content/uploads/2021/04/The-ring-network-topology.webp
+  -Mesh 
+    Everyone is connected
+    https://www.nakivo.com/blog/wp-content/uploads/2021/04/The-mesh-network-topology-the-full-mesh-and-partial-mesh.webp
+  -Wireless
+    Its wireless, you have to be within range of "Hotspot"
+    https://www.conceptdraw.com/How-To-Guide/picture/Roaming-wireless-LAN-diagram.png
+  -Hierarchial
+    Used for large scale networks
+    Internet -> Core Layer -> Distribution Layer -> Access Layer
+    https://ptgmedia.pearsoncmg.com/images/chap1_9781587133329/elementLinks/01fig06_alt.jpg
+
+
+*Devices:
+  -Hubs
+    In one point out multiple
+    https://thecybersecurityman.com/wp-content/uploads/2018/01/hub4.png
+  -Repeaters
+    Push information further by amplifying signal
+    https://media.startech.com/cms/products/gallery_large/poeext1g60w.main.jpg
+  -Switches
+    Has many connections, avoids collisions and directs traffic where it needs to go rather than just blasting it out
+    https://images.spiceworks.com/wp-content/uploads/2022/07/26120446/Ciscos-Industry-Standard-Network-Switch.png
+  -Routers
+    Allow networks to talk to eachother uses IP addresses
+    https://www.cisco.com/content/dam/cisco-cdc/site/us/en/images/networking/Routing_Listing_Rendering_758x484_v2.png
+
+
+Layer 2
+  802.3(x)Ethernet
+  802.11(x)Wireless
+  802.5 Token Ring
+  All considered LAN
+    Can be broken down into MAC(Medium Access Control)/LLC(Logical Link Control)
+
+Frames
+  https://net.cybbh.io/public/networking/latest/01_data/fg.html#_1_3_2_1_message_formatting_method_and_terminology
+  Header
+    Read by Layer 2 to 7
+    Data Payload
+    Footer FCS/CRC
+
+
+
+
+
+
+
+
+
+
+
+
+
