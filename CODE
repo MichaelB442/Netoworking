@@ -1,1 +1,4 @@
 ssh-keygen -f "/home/student/.ssh/known_hosts" -R "172.16.82.106"
+
+Search for double VLAN Tag
+'ether[12:2] = 0x8100 && ether[16:2] = 0x8100'
