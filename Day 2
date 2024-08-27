@@ -1,0 +1,12 @@
+TRAFFIC CAPTURE
+Practical Uses
+  troubleshooting/monitoring
+  intercepting information
+Disadvantages
+  Requires higher permissions
+  Can only see what NIC sees
+  resource heavy
+Hardware Sniffers/Software sniffers
+Sniffing needs Promiscuous mode 
+
+Real-Time Network Traffic Sniffing
