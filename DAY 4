@@ -1,0 +1,222 @@
+https://gist.github.com/sundowndev/283efaddbcf896ab405488330d1bbc06
+
+Reconnaissance Stages
+Passive external
+  google searches, open source research
+
+Active external
+  external scanning for ports, services, etc.
+
+Passive internal
+  ip addresses, dns, processes
+
+Active internal
+  ARP
+
+Steps
+Network Footprinting
+    Network
+    Systems
+    Organization
+
+Network Scanning 
+    Port Scanning
+    Network Scanning
+    Vulnerability Scanning
+
+Network Enumeration
+    Network Resource and shares
+    Users and Groups
+    Routing tables
+    Auditing and Service settings
+    Machine names
+    Applications and banners
+    SNMP and DNS details
+    Other common services and ports
+
+Vulnerability Assessment
+    Injection
+    Broken Authentication
+    Sensitive Data Exposure
+    XML External Entities
+    Broken Access Control
+    Security Misconfiguration
+    Software/Components with Known Vulnerabilities
+
+Passive recon
+    Open-Source Intelligence (OSINT)
+    Publicly Available Information (PAI)
+      IP Addresses and Sub-domains
+      Identifying External/3rd Party sites
+      Identifying People
+      Identifying Technologies
+      Identifying Content of Interest
+      Identifying Vulnerabilities
+      DNS
+        http://whois.domaintools.com/
+        https://centralops.net/co/
+      URL
+        https://web-check.xyz/
+        https://sitereport.netcraft.com/
+      Geoloc
+        https://iplocation.io/
+      BGP -- need more info and have an AS #
+        https://bgpview.io/
+    Commands
+    Whois 
+      queries DNS over tcp 43 - info about owner
+      whois zonetransfer.me
+    Dig 
+      queries DNS over udp 53 - name to ip
+      dig zonetransfer.me A (AAAA, MX, TXT, NS, SOA are all options to query)
+    Zone Transfers -- active
+      dig axfr {@soa.server} {target-site}
+      dig axfr @nsztm1.digi.ninja zonetransfer.me
+    netcraft - like whois but web-based and better
+      https://sitereport.netcraft.com/
+    wayback = historical
+      http://archive.org/web/
+
+Active recon - actually important
+Scanning
+    Remote to Local - going into network
+    Local to Remote - using someone elses resources to scan obfuscation
+    Local to Local - within network
+    Remote to Remote - large scans
+  Vertical scans - one system all ports
+  horizontal scans - range of targets specific ports
+  strobe scan - predefined ports on range of targets
+  block scan - scan all on a range of targets
+  distributed scan - multiple people scanning
+
+    **Ping Sweep**
+    for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done
+
+    NMAP
+    User: TCP Full Connect Scan (-sT)
+    Root: TCP SYN Scan (-sS)
+    both send syn, should recieve syn,ack if alive
+    default ports -- most common 1000 ports via nmap opinion
+    https://nmap.org/book/man-briefoptions.html -- options
+      SYN scan (-sS)
+      Full connect scan (-sT)
+      Null scan (-sN)
+      FIN scan (-sF)
+      XMAS tree scan (-sX)
+      UDP scan (-sU)
+      Idle scan (-sI)
+
+      Decoy scan (-D)
+      ACK/Window scan (-sA)
+      RPC scan (-sR)
+      FTP scan (-b)
+      OS fingerprinting scan (-O)
+      Version scan (-sV)
+      Discovery probes
+
+      -PE - ICMP Ping
+      -Pn - No Ping
+
+      -T4 - Aggresive - 500 ms
+
+    Traceroute
+    traceroute 172.16.82.106
+    sudo traceroute 172.16.82.106 -T -p 443
+
+    NETCAT
+    nc [Options] [Target IP] [Target Port(s)]
+    nc -nzvw1 172.16.82.106 21-23 80 2>&1 | grep -E 'succ|open' ---TCP
+    nc -nuzvw1 172.16.82.106 1000-2000 2>&1 | grep -E 'succ|open' ---UDP
+    **Banner Grabbing**
+    nc [Target IP] [Target Port]
+    nc 172.16.82.106 22
+    nc -u 172.16.82.106 53 ---udp
+
+    wget - Downloads -r recursive
+      wget -r http://172.16.82.106
+      wget -r ftp://172.16.82.106
+
+Passive Internal
+    Wireshark
+    Tcpdump
+    p0f
+IP conf
+  Windows: ipconfig /all
+  Linux: ip address (ifconfig depreciated)
+  VyOS: show interface
+DNS conf
+  Windows: ipconfig /displaydns
+  Linux: cat /etc/resolv.conf
+ARP Cache
+  Windows: arp -a
+  Linux: ip neighbor (arp -a depreciated)
+
+Network Connections
+  Windows: netstat (ntlp)
+  Linux: ss (netstat depreciated)
+  Example options useful for both netstat and ss: -antp
+  a = Displays all active connections and ports.
+  n = No determination of protocol names. Shows 22 not SSH.
+  t = Display only TCP connections.
+  u = Display only UDP connections.
+  p = Shows which processes are using which sockets.
+
+OS info 
+  Windows: systeminfo
+  Linux: uname -a and /etc/os-release
+
+Running Process
+  Windows: tasklist
+  Linux: ps or top
+  
+  Example options useful for ps: -elf
+  e = Show all running processes
+  l = Show long format view
+  f = Show full format listing
+
+File Search
+  find / -name hint* 2> /dev/null
+  find / -iname flag* 2> /dev/null
+
+SSH Conf
+Windows: C:\Windows\System32\OpenSSH\sshd_config
+Linux: /etc/ssh/sshd_config
+
+Active Internal
+
+ARP scanning
+  arp-scan --interface=eth0 --localnet
+  nmap -sP -PR 172.16.82.96/27
+
+PING Scanning
+  ping -c 1 172.16.82.106
+  for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done
+  sudo nmap -sP 172.16.82.96/27
+
+DEV TCP Banner
+  exec 3<>/dev/tcp/172.16.82.106/22; echo -e "" >&3; cat <&3
+
+DEV TCP
+  for p in {1..1023}; do(echo >/dev/tcp/172.16.82.106/$p) >/dev/null 2>&1 && echo "$p open"; done
+
+Mapping tool
+  https://app.diagrams.net/ 
+  save on device for test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
