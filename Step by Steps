@@ -4,4 +4,18 @@ else Use nmap
 nmap -Pn [ip] -T4 -p21,23,80
 PORT DISCOVERY
 nmap or nc script
-if 21/80 -- wget -r [ip]
+PORT VALIDATION
+banner grab:: nc [IP] [port]
+Follow on
+if 21/80 -- wget -r [ip] (or) wget -r ftp://[IP] on Firefox
+if 22/23 connect and do passive internal
+need to get on system: no 22 or 23: port 21
+  FTP[ip]
+    Passive
+    Is
+    get[filename]
+:::::::::::::::::::::::
+NMAP SCANS
+nmap -Pn [IP] -T4 -p21-23,80
+this quick scans 
+
