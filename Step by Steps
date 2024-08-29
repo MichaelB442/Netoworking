@@ -1,1 +1,7 @@
-
+Host Discovery
+**ping sweep command**
+else Use nmap
+nmap -Pn [ip] -T4 -p21,23,80
+PORT DISCOVERY
+nmap or nc script
+if 21/80 -- wget -r [ip]
