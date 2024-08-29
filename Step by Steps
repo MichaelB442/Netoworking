@@ -1,5 +1,5 @@
 Host Discovery
-**ping sweep command**
+for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done
 else Use nmap
 nmap -Pn [ip] -T4 -p21,23,80
 PORT DISCOVERY
