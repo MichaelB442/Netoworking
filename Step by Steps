@@ -17,5 +17,43 @@ need to get on system: no 22 or 23: port 21
 :::::::::::::::::::::::
 NMAP SCANS
 nmap -Pn [IP] -T4 -p21-23,80
-this quick scans 
+  this quick scans 
+  use specific ports based off hints
+  well known ports(1-1023)
+  chunks of 2000 at a time
+  last resort full scan
+**Passive actions**
+  --hostname
+permissions
+  --sudo -l
+interfaces and subnets
+-- ip a
+-- show interface (VYOS)
+Neighbors
+-- ip neigh
+Routing table
+-- ip route
+-- show ip route (vyos)
+Files of interest (passwd,shadow type shit)
+-- find / -iname flag*
+-- find / iname hint*
+other listening ports
+-- ss -ntlp
+available tools
+-- which tcpdump wireshark nmap telnet get curl ping
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
