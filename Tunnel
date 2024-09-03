@@ -1,0 +1,185 @@
+https://net.cybbh.io/-/public/-/jobs/875409/artifacts/modules/networking/slides-v4/08_tunneling.html
+Overview of Tunneling
+  IPv6 Tunneling 
+    IPv6 over IPv4 needs dual stack
+    6in4
+    6to4
+    4in6
+    Teredo
+    ISATAP
+  Traffic Tunneling
+    Mainy used for IPv4 to IPv6
+  Tunneling Malware and Attacks
+    Bypass IPv4-based security
+IPv6 over IPv4
+  Permits IPv6 to be encapsulated in order to move through a IPv4 network
+  Done by the Dual Stack Router
+  **not generally encrypted
+  IPSEC commonly used
+Dual stack
+  Configures an IPv4 and IPv6 address on all devices
+  Resource intensive
+  Allows for IPv4 and IPv6 routing because it has the addresses already set
+6 in 4
+  Tunnel IPv6 traffic in an IPv4 Generic Routing Encapsulation (GRE) tunnel
+6 to 4
+  Allows for IPv6 packets to be sent over an IPv4 network
+  Uses 6to4 gateways that encapsulate IPv6 packets within IPv4 packets
+4 to 6
+  Reverse of 6 to 4
+TEREDO
+  Allows IPv4 clients to access IPv6 clients
+  Encapsulates IPv6 packets within UDP
+ISATAP
+  Allows IPv6 hosts to communicate over an IPv4 network within a site (local network)
+COVERT CHANNEL
+  Using common and legitimate protocols to transfer data in illegitimate ways.
+  Unauthorized/hidden communication between entities.
+  STORAGE
+    Payload
+    Header
+  TIMING
+    Modifying transmission of legitimate traffic
+    Watch TTL changes
+  ICMP/DNS/HTTP
+
+Detect Covert Channels
+  Host Analysis
+    Requires knowledge of each applications expected behavior
+  Network Analysis
+    A good understanding of your network and the common network protocols being used is the key
+  Baselining of what is normal to detect what is abnormal
+
+  ICMP
+    ICMP works with one request and one reply answer
+    Check for:
+      Payload imbalance
+      Request/responce imbalance
+      Large payloads in response
+
+  DNS
+    DNS is a request/response protocol
+    1 request typically gets 1 response
+    Payloads generally do no exceed 512 bytes
+    Check for:
+        Request/response imbalances
+        Unusual payloads
+        Burstiness or continuous use
+
+  DNS
+    Request/Response protocol to pull web content
+    GET request may include .png, .exe, .(anything) files
+    Can vary in sizes of payloads
+    Typically "bursty" but not steady
+
+  STEGANOGRAPHY
+    Hiding messages inside legitimate information objects
+    Methods:
+      Injection
+        Done by inserting message into the unused (whitespace) of the file, usually in a graphic
+        Second most common method
+        Adds size to the file
+        Hard to detect unless you have original file
+      Substitution
+        Done by inserting message into the insignificant portion of the file
+        Most common method used
+        Elements within a digital medium are replaced with hidden information
+      Propagation
+        Generates a new file entirely
+        Needs special software to manipulate file
+SSH
+  authentication, encryption, and integrity
+  remote terminal sessions
+  X11 Forwarding allows graphical
+  tunneling and port forwarding
+  SSH Key Change Fix
+  ssh-keygen -f "/home/student/.ssh/known_hosts" -R "172.16.82.106"
+  SSH
+    -L - Creates a port on the client mapped to a ip:port via the server -- port opens on current device
+    -D - Creates a port on the client and sets up a SOCKS4 proxy tunnel where the target ip:port is specified dynamically
+    -R - Creates the port on the server mapped to a ip:port via the client -- port opens on other device
+    -NT - Do not execute a remote command and disable pseudo-tty (will hang window)
+    LOCAL
+      ssh -p <optional alt port> <user>@<server ip> -L <local bind port>:<tgt ip>:<tgt port> -NT
+      ssh student@172.16.1.15 -L 1122:localhost:22
+      ssh -L <local bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<server ip> -NT
+    DYNAMIC
+      1 STEP
+      ~ssh <user>@<server ip> -p <alt port> -D <port> -NT
+      or
+      ~ssh -D <port> -p <alt port> <user>@<server ip> -NT
+      ~ssh student@172.16.1.15 -D 9050
+      or
+      ~ssh -D 9050 student@172.16.1.15
+      2 STEP
+      ssh student@172.16.1.15 -L 2222:172.16.40.10:22
+      or
+      ssh -L 2222:172.16.40.10:22 student@172.16.1.15
+      ssh student@localhost -p 2222 -D 9050
+      or
+      ssh -D 9050 student@localhost -p 2222
+
+      Proxychains default port is 9050
+      Creates a dynamic socks4 proxy that interacts alone, or with a previously established remote or local port forward.
+      Allows the use of scripts and other userspace programs through the tunnel
+      proxychains ./scan.sh
+      proxychains nmap -Pn 172.16.82.96/27 -p 21-23,80
+      proxychains ssh student@172.16.82.106
+      proxychains telnet 172.16.82.106
+      proxychains wget -r http://172.16.82.106
+      proxychains wget -r ftp://172.16.82.106
+
+    REMOTE
+      ssh -p <optional alt port> <user>@<server ip> -R <remote bind port>:<tgt ip>:<tgt port> -NT
+      or
+      ssh -R <remote bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<server ip> -NT
+      ssh student@10.10.0.40 -R 4422:localhost:22
+      or
+      ssh -R 4422:localhost:22 student@10.10.0.40
+
+    LOCAL AND REMOTE
+      Internet_Host: **FORWARD**
+      ssh student@172.16.1.15 -L 2223:172.16.40.10:23 -NT
+      or
+      ssh -L 2223:172.16.40.10:23 student@172.16.1.15 -NT
+
+      THEN 
+
+      Blue_INT_DMZ_Host-1: **BACK**
+      ssh student@172.16.1.15 -R 1122:localhost:22
+      or
+      ssh -R 1122:localhost:22 student@172.16.1.15
+
+      THEN
+
+      Internet_Host:  **FORWARD THRU BOTH**
+      ssh student@172.16.1.15 -L 2222:localhost:1122
+      or
+      ssh -L 2222:localhost:1122 student@172.16.1.15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
