@@ -68,6 +68,7 @@ Listener Send:
   nc -lvp 9001 < newfile.txt 
   nc -lvp 172.16.82.106 9001 > file.txt
 Relay Netcat :
+ **Listener-Listener**
   (host1)Relay:  
           mknod mypipe p
           nc -lvp 1111 < mypipe | nc -lvp 3333 > mypipe
