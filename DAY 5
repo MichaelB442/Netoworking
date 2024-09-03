@@ -5,7 +5,6 @@
 Methods
 TFTP
   UDP
-  
 FTP
   active(default)/passive
   2 seperate connections on Control(21)/Data(20)
@@ -14,12 +13,89 @@ FTP
     client initiates both connections
   active mode
     client initiates control, server initiates data
-  get-get
-  put-put
-  passive-enter passive mode
-  exit-end session 
-  
-
+  get- get
+  put- put
+  passive- enter passive mode
+  exit- end session 
 FTPS
+  adds encryption
+  explicit mode - ports 20/21
+  implicit mode - ports 989/990
 SFTP
+  encryption
+  adds ftp like services
+  uses a sign in
 SCP
+  port 22
+  encryption
+  usses ssh
+  some options:
+    .  - Present working directory
+    -v - verbose mode
+    -P - alternate port **
+    -r - recursively copy an entire directory
+    -3 - 3-way copy
+  Download:
+    scp (address:file) (home destination for file)
+  Upload:
+    scp (file) (address:location)
+  SCP -3:
+    scp -3 (src address:file) (tgt address:tgt location) ** the -3 sends file to home device before sending to target address(make us the middle man)
+  Recurive UP:
+    scp -r folder/ (address:)
+  Recursive DOWN:
+    scp -r (address:location)
+  SCP with Tunnel:
+    ssh student@172.16.82.106 -L 1111:localhost:22 -NT
+    Down:
+    scp -P 1111 student@localhost:secretstuff.txt /home/student
+    UP:
+    scp -P 1111 secretstuff.txt student@localhost:/home/student
+  SCP thru proxy:
+    ssh student@172.16.82.106 -D 9050 -NT
+    Down:
+    proxychains scp student@localhost:secretstuff.txt .
+    UP:
+    proxychains scp secretstuff.txt student@localhost:
+*Uncommon Methods
+Netcat
+  send/recieve
+  portscan
+Client Send:
+  nc -lvp 9001 > newfile.txt 
+  nc -lvp 172.16.82.106 9001 < file.txt
+Listener Send:
+  nc -lvp 9001 < newfile.txt 
+  nc -lvp 172.16.82.106 9001 > file.txt
+Relay Netcat :
+  (host1)Relay:  
+          mknod mypipe p
+          nc -lvp 1111 < mypipe | nc -lvp 3333 > mypipe
+  (host2)Send: 
+          nc 172.16.82.106 1111 < secret.txt *OR* nc -lvp 1111 -- just gonna print to screen so not very useful except to check the pipe is built correct(same for reciever)
+  (host3)Recieve: 
+          nc 192.168.1.1 3333 > newsecret.txt *OR*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
