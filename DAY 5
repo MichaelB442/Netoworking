@@ -1,0 +1,25 @@
+********Transfer and Redirection
+
+
+
+Methods
+TFTP
+  UDP
+  
+FTP
+  active(default)/passive
+  2 seperate connections on Control(21)/Data(20)
+  Authentication in plain text- insecure
+  passive mode 
+    client initiates both connections
+  active mode
+    client initiates control, server initiates data
+  get-get
+  put-put
+  passive-enter passive mode
+  exit-end session 
+  
+
+FTPS
+SFTP
+SCP
