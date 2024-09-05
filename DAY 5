@@ -128,7 +128,7 @@ Base64 Encode/Decode
   Generate base64 output /w no line wrapping:
     base64 -w0 logoCyber.png
   Decode base64:
-    base64 -d b64image.png > logoCyber.png
+    base64 -d b64.png > logoCyber.png
 
 
 
