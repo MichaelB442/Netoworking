@@ -161,11 +161,15 @@ SSH
 
 
 
-
-
-
-
-
+5 Tunnel steps
+Target - no reason to tunnel if you can just ssh
+local/dynamic tools will start from home device
+remote/reverse anything else - mainly if ssh is not available or a hidden port
+local 
+          ssh localhost rhp:tgt:open port
+reverse
+ssh student@(internal ip of target) -R 20299:127.0.0.1:22
+                                      open 20299 on target/connect to 22 on system
 
 
 
