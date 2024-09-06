@@ -173,8 +173,8 @@ ssh student@(internal ip of target) -R 20299:127.0.0.1:22
 
 
 
-
-
+ssh student@10.50.23.141 -R 20201:127.0.0.1:22
+ssh net2_student2@127.0.0.1 -p 20201 -L 20203:192.168.0.20:80
 
 
 
