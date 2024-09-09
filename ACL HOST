@@ -138,6 +138,22 @@ Replaces rule at number
 Deletes rule at number
   iptables -t [table] -D [chain] [rule num]
 
+ssh
+sudo iptables -t filter -A INPUT -p tcp --dport 22 -j ACCEPT
+sudo iptables -t filter -A OUTPUT -p tcp --dport 22 -j ACCEPT
+
+terminator
+sudo iptables -A INPUT -p tcp -m multiport --ports 6010,6011,6012 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -m multiport --ports 6010,6011,6012 -j ACCEPT
+
+not allow specific in
+(-I puts it at the top so no unwanted abilities remain)
+sudo iptables -t filter -I INPUT -s 172.16.82.112 -j DROP
+sudo iptables -t filter -I OUTPUT -s 172.16.82.112 -j DROP
+sudo iptables -t filter -A INPUT -s 172.16.82.112 -j DROP
+sudo iptables -t filter -A OUTPUT -s 172.16.82.112 -j DROP
+
+
 
 
 
